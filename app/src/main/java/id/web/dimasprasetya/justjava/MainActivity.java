@@ -10,7 +10,7 @@ import java.text.NumberFormat;
 public class MainActivity extends AppCompatActivity {
 
     int quantity = 0;
-    int price = 5;
+    int price = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,36 +21,42 @@ public class MainActivity extends AppCompatActivity {
     // increase quantity of coffee
     public void increment(View view) {
         quantity += 1;
-        displayIncrement(quantity);
-    }
-
-    public void displayIncrement(int number) {
-        TextView quantityTextView = (TextView) findViewById(R.id.value_text_view);
-        quantityTextView.setText("" + number);
+        displayValue(quantity);
     }
 
     // decrease quantity of coffe
     public void decrement(View view) {
         quantity -= 1;
-        displayDecrement(quantity);
+        displayValue(quantity);
     }
 
-    public void displayDecrement(int number) {
+    public void displayValue(int number) {
         TextView quantityTextView = (TextView) findViewById(R.id.value_text_view);
         quantityTextView.setText("" + number);
     }
 
     // submit order
     public void submitOrder(View view) {
-        int cost = quantity * price;
-        String priceMessage = "Total: Rp" + cost;
-        priceMessage += "\nThank You!";
+        int cost = calculatePrice(quantity, price);
+        String priceMessage = createOrderSummary(cost);
         displayMessage(priceMessage);
     }
 
+    private int calculatePrice(int quantity, int pricePerCup) {
+        return quantity * pricePerCup;
+    }
+
+    private String createOrderSummary(int cost) {
+        String priceMessage = "Name     : Dimas Prasetya";
+        priceMessage += "\nQuantity : " + quantity;
+        priceMessage += "\nTotal    : " + cost;
+        priceMessage += "\nThank You!";
+        return priceMessage;
+    }
+
     public void displayMessage(String message) {
-        TextView priceTextView = (TextView) findViewById(R.id.valuePrice_text_view);
-        priceTextView.setText(message);
+        TextView orderSummaryTextView = (TextView) findViewById(R.id.valueOrderSummary_text_view);
+        orderSummaryTextView.setText(message);
     }
 
     // cancel order
@@ -67,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void cancelPrice(int number) {
-        TextView priceTextView = (TextView) findViewById(R.id.valuePrice_text_view);
+        TextView priceTextView = (TextView) findViewById(R.id.valueOrderSummary_text_view);
         priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
     }
 
