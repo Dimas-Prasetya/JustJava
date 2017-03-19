@@ -2,7 +2,9 @@ package id.web.dimasprasetya.justjava;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -37,8 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
     // submit order
     public void submitOrder(View view) {
+        CheckBox whippedCreamCheckBox = (CheckBox) findViewById(R.id.whipped_cream_checkbox);
+        boolean hasWippedCream = whippedCreamCheckBox.isChecked();
+        Log.v("MainActivity", "Has wipped cream : " + hasWippedCream);
+
         int cost = calculatePrice(quantity, price);
-        String priceMessage = createOrderSummary(cost);
+        String priceMessage = createOrderSummary(cost, hasWippedCream);
         displayMessage(priceMessage);
     }
 
@@ -46,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
         return quantity * pricePerCup;
     }
 
-    private String createOrderSummary(int cost) {
+    private String createOrderSummary(int cost, boolean addWhippedCream) {
         String priceMessage = "Name     : Dimas Prasetya";
+        priceMessage += "\nAdd whipped cream ? " + addWhippedCream;
         priceMessage += "\nQuantity : " + quantity;
         priceMessage += "\nTotal    : " + cost;
         priceMessage += "\nThank You!";
