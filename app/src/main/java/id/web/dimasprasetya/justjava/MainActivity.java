@@ -7,10 +7,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    int quantity = 0;
+    int quantity = 1;
     int price = 10;
 
     @Override
@@ -21,12 +22,22 @@ public class MainActivity extends AppCompatActivity {
 
     // increase quantity of coffee
     public void increment(View view) {
+        if (quantity == 10) {
+            Toast.makeText(this, "You can't have more than 10 coffees!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         quantity += 1;
         displayValue(quantity);
     }
 
     // decrease quantity of coffe
     public void decrement(View view) {
+        if (quantity == 1) {
+            Toast.makeText(this, "You can't have less than 1 coffees!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         quantity -= 1;
         displayValue(quantity);
     }
@@ -50,18 +61,28 @@ public class MainActivity extends AppCompatActivity {
         boolean hasChocolate = chocolateCheckBox.isChecked();
         // Log.v("MainAvticity", "Has chocolate : " + hasChocolate);
 
-        int cost = calculatePrice(quantity, price);
+        int cost = calculatePrice(quantity, price, hasWippedCream, hasChocolate);
         String priceMessage = createOrderSummary(valueName, hasWippedCream, hasChocolate, cost);
         displayMessage(priceMessage);
     }
 
     /**
      *
-     * @param quantity      = quantity of coffee
-     * @param pricePerCup   = price per cup of coffee
+     * @param quantity
+     * @param pricePerCup
+     * @param addWhippedCream
+     * @param addChocolate
      * @return
      */
-    private int calculatePrice(int quantity, int pricePerCup) {
+    private int calculatePrice(int quantity, int pricePerCup, boolean addWhippedCream, boolean addChocolate) {
+        if (addWhippedCream) {
+            pricePerCup += 1;
+        }
+
+        if (addChocolate) {
+            pricePerCup += 2;
+        }
+
         return quantity * pricePerCup;
     }
 
